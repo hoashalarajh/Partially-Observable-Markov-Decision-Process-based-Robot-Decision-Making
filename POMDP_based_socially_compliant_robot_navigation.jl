@@ -76,7 +76,7 @@ end
 
 POMDPs.discount(p::SocialNavPOMDP) = p.discount
 
-# This tells the solver which actions are available for your POMDP
+# This tells the solver which actions are available for the POMDP
 function POMDPs.actions(p::SocialNavPOMDP)
     return [FollowFlow, Yield, Overtake, FindGap, Wait]
 end
@@ -146,7 +146,7 @@ function POMDPs.initialstate(p::SocialNavPOMDP)
     
     # Use sample() instead of rand() for Weights
     crowd_dist = sample([1, 2], Weights([0.6, 0.4]))
-    flow       = rand([1, 2]) # rand is fine here as there are no weights
+    flow       = rand([1, 2]) # rand is ok here as there are no weights
     density    = sample([1, 2], Weights([0.7, 0.3]))
 
     return Deterministic(CrowdState(rx, ry, crowd_dist, flow, density))
@@ -164,9 +164,6 @@ solver = POMCPOWSolver(
 )
 
 planner = solve(solver, pomdp)
-
-# Note: Ensure the 'initialstate' function is defined in a cell 
-# AFTER 'using StatsBase' has been called.
 
 for (s, a, o, r, b) in stepthrough(pomdp, planner, "s,a,o,r,b"; max_steps=1000, rng=rng)
     println("action=$a | obs=$o | reward=$r")
