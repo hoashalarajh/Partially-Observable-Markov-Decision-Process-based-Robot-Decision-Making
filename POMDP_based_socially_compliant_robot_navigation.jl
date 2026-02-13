@@ -127,6 +127,10 @@ function POMDPs.reward(p::SocialNavPOMDP, s::CrowdState, a::Action)
     if a == Yield && s.density == 2
         r += 2.0
     end
+    # if flow is opposing and density is high it is not good to go ahead, rather yielding helps immediate dense crowd
+    if a == FollowFlow && s.flow == 2 && s.density == 2
+        r -= 1.0
+    end
     return r
 end
 
@@ -168,3 +172,4 @@ planner = solve(solver, pomdp)
 for (s, a, o, r, b) in stepthrough(pomdp, planner, "s,a,o,r,b"; max_steps=1000, rng=rng)
     println("action=$a | obs=$o | reward=$r")
 end
+
