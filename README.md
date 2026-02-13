@@ -34,5 +34,7 @@ CrowdState = (robot_x, robot_y, distance, flow, density)
 
 ---
 
+The visualization shows the results of the 1000-step simulation run
+
 <img width="1500" height="1000" alt="pomdp_simulation_analysis" src="https://github.com/user-attachments/assets/f0eba3d6-603e-4ca9-bf27-4ad9f3da5495" />
 <img width="1500" height="1000" alt="critical_situation_analysis" src="https://github.com/user-attachments/assets/0afd4c86-33f9-4249-823d-fea95430bb34" />
