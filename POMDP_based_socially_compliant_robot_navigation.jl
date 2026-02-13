@@ -116,23 +116,74 @@ end
 
 
 function POMDPs.reward(p::SocialNavPOMDP, s::CrowdState, a::Action)
-    r = -1.0  # time penalty
+    r = -1.0  # Base time penalty
 
-    if s.crowd_dist == 2 && a == Overtake
-        r -= 5.0   # socially bad
+    # --- 1. THE "IMPASSE" (Critical High-Risk Scenario) ---
+    # Scenario: The robot is close to an opposing, dense crowd.
+    # The only polite/safe move is to wait for the situation to clear.
+    if s.crowd_dist == 2 && s.flow == 2 && s.density == 2
+        if a == Wait || a == Yield
+            r += 5.0  # Heavily reward patience
+        elseif a == FollowFlow || a == Overtake
+            r -= 15.0 # Critical Penalty: Forcing movement here is a collision risk
+        end
     end
+
+    # --- 2. BOUNDARY CONSTRAINTS (Spatial Awareness) ---
+    # Penalize trying to move into the boundary "walls" (inefficient navigation)
+    if s.ry == 1 && a == FindGap
+        r -= 2.0  
+    elseif s.ry == p.grid_size && a == Overtake
+        r -= 2.0  
+    end
+
+    # --- 3. PROGRESS & GOAL ORIENTATION ---
+    # Bonus for moving with flow, which increases as you get closer to the goal
     if a == FollowFlow && s.flow == 1
-        r += 3.0
+        r += (s.rx / p.grid_size) * 2.0  
     end
-    if a == Yield && s.density == 2
-        r += 2.0
+    
+    # Large bonus for reaching the end of the grid (rx = 10)
+    if s.rx == p.grid_size
+        r += 10.0 
     end
-    # if flow is opposing and density is high it is not good to go ahead, rather yielding helps immediate dense crowd
-    if a == FollowFlow && s.flow == 2 && s.density == 2
-        r -= 1.0
+
+    # --- 4. LANE PREFERENCE (Social Comfort) ---
+    # Humans prefer not to hug walls; slightly penalize being at the very edges (1 or 10)
+    if s.ry == 1 || s.ry == p.grid_size
+        r -= 0.5
     end
+
+    # --- 5. REFINED SOCIAL RULES ---
+    # Proximity (Safety)
+    if s.crowd_dist == 2 # Near
+        if a == Overtake; r -= 10.0; end
+        if a == Wait;      r += 1.0;  end
+    end
+
+    # Flow (Etiquette)
+    if s.flow == 1 # Aligned
+        if a == FollowFlow; r += 3.0; end
+        if a == Yield || a == Wait; r -= 3.0; end # Don't block traffic!
+    elseif s.flow == 2 # Opposing
+        if a == FindGap;    r += 2.0; end
+        if a == FollowFlow; r -= 4.0; end # Don't walk into people head-on
+    end
+
+    # Density (Congestion)
+    if s.density == 2 # High
+        if a == Yield;    r += 4.0; end
+        if a == Overtake; r -= 5.0; end
+    elseif s.density == 1 # Low
+        if a == Wait; r -= 2.0; end # Efficiency: Keep moving if it's empty
+    end
+
     return r
 end
+
+
+####################################
+
 
 pomdp = SocialNavPOMDP(10, 0.95)
 
@@ -172,4 +223,5 @@ planner = solve(solver, pomdp)
 for (s, a, o, r, b) in stepthrough(pomdp, planner, "s,a,o,r,b"; max_steps=1000, rng=rng)
     println("action=$a | obs=$o | reward=$r")
 end
+
 
