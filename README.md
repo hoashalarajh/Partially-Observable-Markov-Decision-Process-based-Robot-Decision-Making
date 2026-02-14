@@ -33,6 +33,40 @@ CrowdState = (robot_x, robot_y, distance, flow, density)
 ```
 
 #### State transition diagram is visualized below:
+```mermaid
+graph TD
+    subgraph Environment ["Environment (World)"]
+        direction TB
+        s_curr((Current State s)) -->|Action a| s_next((Next State s'))
+        s_next -->|Observation Function O| o[Observation o]
+        s_next -->|Reward Function R| r[Reward r]
+    end
+
+    subgraph Agent ["Agent (Robot)"]
+        direction TB
+        b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
+        o --> |Sense| Updater{Belief Updater}
+        a --> Updater
+        b_curr --> Updater
+        Updater -->|Bayes Update| b_next[(Next Belief b')]
+    end
+
+    %% Connections between Agent and Environment
+    a -->|Execute| s_curr
+    r -->|Feedback| b_next
+
+    %% The Loop Connection
+    b_next -.-> b_curr
+    s_next -.-> s_curr
+
+    %% Styling
+    %% I added 'color:black' (text) and 'stroke:black' (border) to Environment
+    style Environment fill:#4e4d82,stroke:black,stroke-width:2px,color:black
+    style Agent fill:##824d67,stroke:black,stroke-width:2px,color:black
+    style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
+```
+
+#### Functional block diagram is visualized as below:
 
 ```mermaid
 stateDiagram-v2
@@ -83,81 +117,6 @@ stateDiagram-v2
             2 (High) : P = 0.3
         }
     }
-```
-
----
-```mermaid
-graph TD
-    subgraph Environment ["Environment (World)"]
-        direction TB
-        s_curr((Current State s)) -->|Action a| s_next((Next State s'))
-        s_next -->|Observation Function O| o[Observation o]
-        s_next -->|Reward Function R| r[Reward r]
-    end
-
-    subgraph Agent ["Agent (Robot)"]
-        direction TB
-        b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
-        o --> |Sense| Updater{Belief Updater}
-        a --> Updater
-        b_curr --> Updater
-        Updater -->|Bayes Update| b_next[(Next Belief b')]
-    end
-
-    %% Connections between Agent and Environment
-    a -->|Execute| s_curr
-    r -->|Feedback| b_next
-
-    %% The Loop Connection
-    b_next -.-> b_curr
-    s_next -.-> s_curr
-
-    %% Styling
-    %% I added 'color:black' (text) and 'stroke:black' (border) to Environment
-    style Environment fill:#4e4d82,stroke:black,stroke-width:2px,color:black
-    style Agent fill:##824d67,stroke:black,stroke-width:2px,color:black
-    style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
-```
-
-```mermaid
-graph TD
-    %% 1. THE WORLD (Environment)
-    subgraph Environment ["Environment (The World)"]
-        direction TB
-        s_curr((State s)) -->|1. Robot Moves| s_next((New State s'))
-        s_next -->|2. Emits Signal| o[Sensor Observation o]
-        s_next -.->|Generates| r[Reward r]
-    end
-
-    %% 2. THE ROBOT (Agent)
-    subgraph Agent ["Robot Agent (The Brain)"]
-        direction TB
-        
-        %% The Planner decides what to do
-        b_curr[(Current Belief b)] -->|Plan| a[Action a]
-        
-        %% The CRITICAL UPDATE STEP
-        %% Inputs: Old Belief + Action + New Observation
-        o --> Updater{Belief Updater}
-        a -->|I did this...| Updater
-        b_curr -->|I thought this...| Updater
-        
-        %% Output: New Belief
-        Updater -->|Now I think...| b_next[(New Belief b')]
-    end
-
-    %% connecting the loops
-    a -->|Execute Action| s_curr
-    b_next -.-> b_curr
-    s_next -.-> s_curr
-
-    %% Styling for clarity
-    style Environment fill:#e1f5fe,stroke:black,stroke-width:2px,color:black
-    style Agent fill:#fff3e0,stroke:#e65100,color:black
-    
-    %% Highlight the Updater to show it takes multiple inputs
-    style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
-
 ```
 
 ---
