@@ -44,7 +44,12 @@ graph TD
 
     subgraph Agent ["Agent (Robot)"]
         direction TB
-        b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
+        %% The Planner (The Decision Maker)
+        b_curr[(Current Belief b)] -->|Plan| Planner
+        r -->|Feedback| Planner["Planner (POMCPOW)"]
+        Planner --> a[Action a]
+
+        %% b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
         o --> |Sense| Updater{Belief Updater}
         a --> Updater
         b_curr --> Updater
