@@ -32,6 +32,7 @@ The POMDP state consists of:
 CrowdState = (robot_x, robot_y, distance, flow, density)
 ```
 
+#### State transition diagram is visualized below:
 
 ```mermaid
 stateDiagram-v2
