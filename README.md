@@ -68,7 +68,7 @@ stateDiagram-v2
     end note
 
     state Crowd_State_New {
-        direction TD
+        direction LR
         state "new_dist'" as ND {
             1 (Far) : P = 0.6
             2 (Near) : P = 0.4
