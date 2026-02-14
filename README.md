@@ -120,6 +120,47 @@ graph TD
     style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
 ```
 
+```mermaid
+graph TD
+    %% 1. THE WORLD (Environment)
+    subgraph Environment ["Environment (The World)"]
+        direction TB
+        s_curr((State s)) -->|1. Robot Moves| s_next((New State s'))
+        s_next -->|2. Emits Signal| o[Sensor Observation o]
+        s_next -.->|Generates| r[Reward r]
+    end
+
+    %% 2. THE ROBOT (Agent)
+    subgraph Agent ["Robot Agent (The Brain)"]
+        direction TB
+        
+        %% The Planner decides what to do
+        b_curr[(Current Belief b)] -->|Plan| a[Action a]
+        
+        %% The CRITICAL UPDATE STEP
+        %% Inputs: Old Belief + Action + New Observation
+        o --> Updater{Belief Updater}
+        a -->|I did this...| Updater
+        b_curr -->|I thought this...| Updater
+        
+        %% Output: New Belief
+        Updater -->|Now I think...| b_next[(New Belief b')]
+    end
+
+    %% connecting the loops
+    a -->|Execute Action| s_curr
+    b_next -.-> b_curr
+    s_next -.-> s_curr
+
+    %% Styling for clarity
+    style Environment fill:#e1f5fe,stroke:black,stroke-width:2px,color:black
+    style Agent fill:#fff3e0,stroke:#e65100,color:black
+    
+    %% Highlight the Updater to show it takes multiple inputs
+    style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
+
+```
+
 ---
 
 #### Following visualizations show the results of the 1000-step simulation run:
