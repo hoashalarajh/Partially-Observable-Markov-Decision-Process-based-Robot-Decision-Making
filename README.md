@@ -100,7 +100,7 @@ stateDiagram
       }
     }
   }
-  S --> S_prime:a = FollowFlow (rx' = rx + 1) <br/>
+  S --> S_prime:a = FollowFlow (rx' = rx + 1)
   S --> S_prime:a = Overtake (ry' = ry + 1)
   S --> S_prime:a = FindGap (ry' = ry - 1)
   S --> S_prime:a = Yield or Wait (No change in position)
