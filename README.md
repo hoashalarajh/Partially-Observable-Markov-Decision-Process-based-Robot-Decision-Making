@@ -94,7 +94,7 @@ graph TD
         s_next -->|Reward Function R| r[Reward r]
     end
 
-    subgraph Agent ["Robot Agent (Brain)"]
+    subgraph Agent ["Agent (Robot)"]
         b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
         a --> Updater
         b_curr --> Updater
