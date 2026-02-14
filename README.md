@@ -107,7 +107,6 @@ graph TD
     %% Connections between Agent and Environment
     a -->|Execute| s_curr
     r -->|Feedback| b_next
-    a -->|Execute Action| s_curr
 
     %% The Loop Connection
     b_next -.-> b_curr
