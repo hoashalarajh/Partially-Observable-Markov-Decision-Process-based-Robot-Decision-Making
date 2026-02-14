@@ -35,7 +35,7 @@ CrowdState = (robot_x, robot_y, distance, flow, density)
 
 ```mermaid
 stateDiagram-v2
-    direction TD
+    direction TB
 
     %% Define the states
     state "Current State (s)" as S {
@@ -68,7 +68,7 @@ stateDiagram-v2
     end note
 
     state Crowd_State_New {
-        direction LR
+        direction TB
         state "new_dist'" as ND {
             1 (Far) : P = 0.6
             2 (Near) : P = 0.4
