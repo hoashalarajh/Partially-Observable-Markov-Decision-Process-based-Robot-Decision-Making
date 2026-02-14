@@ -95,7 +95,7 @@ graph TD
         s_next -->|Reward Function R| r[Reward r]
     end
 
-    subgraph Agent ["Robot Agent (Brain)"]
+    subgraph Agent ["Agent (Robot)"]
         direction TB
         b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
         o --> Updater{Belief Updater}
@@ -116,7 +116,7 @@ graph TD
     %% Styling
     %% I added 'color:black' (text) and 'stroke:black' (border) to Environment
     style Environment fill:#4e4d82,stroke:black,stroke-width:2px,color:black
-    style Agent fill:#fff3e0,stroke:black,stroke-width:2px,color:black
+    style Agent fill:##824d67,stroke:black,stroke-width:2px,color:black
     style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
 ```
 
