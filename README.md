@@ -29,12 +29,54 @@ The POMDP state consists of:
 - Crowd density: `1 = low`, `2 = high`
 
 ```mermaid
-flowchart TD
-    A[Start] --> B{Process};
-    B --> C{Decision?};
-    C --> D[End];
-    C --> E[Go back];
-    E --> B;
+stateDiagram-v2
+    direction LR
+
+    %% Define the states
+    state "Current State (s)" as S {
+        direction TB
+        Robot_Pos: (rx, ry)
+        Crowd_State: (dist, flow, density)
+    }
+
+    state "Next State (s')" as S_prime {
+        direction TB
+        Robot_Pos_New: (rx', ry')
+        Crowd_State_New: (dist', flow', density')
+    }
+
+    %% Part 1: Deterministic Robot Transitions based on Action (a)
+    note left of S
+        Robot movement is deterministic.
+        Positions are clamped to [1, grid_size].
+    end note
+    
+    S --> S_prime : a = FollowFlow (rx' = rx + 1)
+    S --> S_prime : a = Overtake (ry' = ry + 1)
+    S --> S_prime : a = FindGap (ry' = ry - 1)
+    S --> S_prime : a = Yield or Wait (No change in position)
+
+    %% Part 2: Stochastic Crowd Transition (Independent of Action)
+    note right of S_prime
+        Crowd dynamics are stochastic
+        and independent of the previous state or action.
+    end note
+
+    state Crowd_State_New {
+        direction LR
+        state "new_dist'" as ND {
+            1 (Far) : P=0.6
+            2 (Near) : P=0.4
+        }
+        state "new_flow'" as NF {
+            1 (Aligned) : P=0.5
+            2 (Opposing) : P=0.5
+        }
+        state "new_density'" as NDen {
+            1 (Low) : P=0.7
+            2 (High) : P=0.3
+        }
+    }
 ```
 
 
