@@ -35,7 +35,7 @@ CrowdState = (robot_x, robot_y, distance, flow, density)
 
 ```mermaid
 stateDiagram-v2
-    direction LR
+    direction TD
 
     %% Define the states
     state "Current State (s)" as S {
@@ -53,7 +53,7 @@ stateDiagram-v2
     %% Part 1: Deterministic Robot Transitions based on Action (a)
     note left of S
         Robot movement is deterministic.
-        Positions are clamped to [1, grid_size].
+        Positions are bounded within [1, grid_size].
     end note
     
     S --> S_prime : a = FollowFlow (rx' = rx + 1)
@@ -68,25 +68,25 @@ stateDiagram-v2
     end note
 
     state Crowd_State_New {
-        direction LR
+        direction TD
         state "new_dist'" as ND {
-            1 (Far) : P=0.6
-            2 (Near) : P=0.4
+            1 (Far) : P = 0.6
+            2 (Near) : P = 0.4
         }
         state "new_flow'" as NF {
-            1 (Aligned) : P=0.5
-            2 (Opposing) : P=0.5
+            1 (Aligned) : P = 0.5
+            2 (Opposing) : P = 0.5
         }
         state "new_density'" as NDen {
-            1 (Low) : P=0.7
-            2 (High) : P=0.3
+            1 (Low) : P = 0.7
+            2 (High) : P = 0.3
         }
     }
 ```
 
 ---
 
-#### The visualization shows the results of the 1000-step simulation run
+#### Following visualizations show the results of the 1000-step simulation run:
 
 <img width="1500" height="1000" alt="pomdp_simulation_analysis" src="https://github.com/user-attachments/assets/8d47631f-c14f-4e96-a1d7-457281923e7d" />
 <img width="1500" height="1000" alt="critical_situation_analysis" src="https://github.com/user-attachments/assets/ad05fcec-5c7a-4ff1-acd7-a08141d802ae" />
