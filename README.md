@@ -86,6 +86,38 @@ stateDiagram-v2
 ```
 
 ---
+```mermaid
+graph TD
+    subgraph Environment ["Environment (World)"]
+        s_curr((Current State s)) -->|Action a| s_next((Next State s'))
+        s_next -->|Observation Function O| o[Observation o]
+        s_next -->|Reward Function R| r[Reward r]
+    end
+
+    subgraph Agent ["Robot Agent (Brain)"]
+        b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
+        o --> Updater{Belief Updater}
+        a --> Updater
+        b_curr --> Updater
+        Updater -->|Bayes Update| b_next[(Next Belief b')]
+    end
+
+    %% Connections between Agent and Environment
+    a -->|Execute| s_curr
+    o -->|Sense| Updater
+    r -->|Feedback| b_next
+
+    %% The Loop Connection
+    b_next -.-> b_curr
+    s_next -.-> s_curr
+
+    %% Styling
+    style Environment fill:#e1f5fe,stroke:#01579b
+    style Agent fill:#fff3e0,stroke:#e65100
+    style Updater fill:#ffd54f,stroke:#ff6f00,stroke-width:2px
+```
+
+---
 
 #### Following visualizations show the results of the 1000-step simulation run:
 
