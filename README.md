@@ -28,6 +28,11 @@ The POMDP state consists of:
 - Crowd flow: `1 = aligned`, `2 = opposing`
 - Crowd density: `1 = low`, `2 = high`
 
+```text
+CrowdState = (robot_x, robot_y, distance, flow, density)
+```
+
+
 ```mermaid
 stateDiagram-v2
     direction LR
@@ -77,11 +82,6 @@ stateDiagram-v2
             2 (High) : P=0.3
         }
     }
-```
-
-
-```text
-CrowdState = (robot_x, robot_y, distance, flow, density)
 ```
 
 ---
