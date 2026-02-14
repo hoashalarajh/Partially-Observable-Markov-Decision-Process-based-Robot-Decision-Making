@@ -48,8 +48,6 @@ graph TD
         b_curr[(Current Belief b)] -->|Plan| Planner
         r -->|Feedback| Planner["Planner (POMCPOW)"]
         Planner --> a[Action a]
-
-        %% b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
         o --> |Sense| Updater{Belief Updater}
         a --> Updater
         b_curr --> Updater
@@ -58,7 +56,6 @@ graph TD
 
     %% Connections between Agent and Environment
     a -->|Execute| s_curr
-    r -->|Feedback| b_next
 
     %% The Loop Connection
     b_next -.-> b_curr
