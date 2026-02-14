@@ -96,7 +96,6 @@ graph TD
 
     subgraph Agent ["Robot Agent (Brain)"]
         b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
-        o --> Updater{Belief Updater}
         a --> Updater
         b_curr --> Updater
         Updater -->|Bayes Update| b_next[(Next Belief b')]
