@@ -1,6 +1,6 @@
 # POMDP-Based Socially Compliant Robot Navigation
 
-This repository implements a **Partially Observable Markov Decision Process (POMDP)** model for socially compliant robot navigation in a simplified crowd environment. The project is written in **Julia** and uses the **POMDPs.jl** ecosystem with an online Monte Carlo planning approach.
+This repository implements a **Partially Observable Markov Decision Process (POMDP)** model for socially compliant robot navigation in a simplified crowd environment. The project is written in **Julia** and uses the **POMDPs.jl** ecosystem with an online Monte Carlo Tree Search based planning approach.
 
 The goal is to demonstrate how uncertainty in crowd perception and social context can be incorporated into robot navigation decision-making.
 
