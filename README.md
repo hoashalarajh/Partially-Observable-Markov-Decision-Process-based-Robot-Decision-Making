@@ -96,14 +96,14 @@ graph TD
 
     subgraph Agent ["Agent (Robot)"]
         b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
-        a --> Updater
-        b_curr --> Updater
-        Updater -->|Bayes Update| b_next[(Next Belief b')]
+        a --> Belief Updater
+        b_curr --> Belief Updater
+        Belief Updater -->|Bayes Update| b_next[(Next Belief b')]
     end
 
     %% Connections between Agent and Environment
     a -->|Execute| s_curr
-    o -->|Sense| Updater
+    o -->|Sense| Belief Updater
     r -->|Feedback| b_next
 
     %% The Loop Connection
