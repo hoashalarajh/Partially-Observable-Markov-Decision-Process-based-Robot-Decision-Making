@@ -128,5 +128,5 @@ stateDiagram-v2
 <img width="1500" height="1000" alt="pomdp_simulation_analysis" src="https://github.com/user-attachments/assets/8d47631f-c14f-4e96-a1d7-457281923e7d" />
 <img width="1500" height="1000" alt="critical_situation_analysis" src="https://github.com/user-attachments/assets/ad05fcec-5c7a-4ff1-acd7-a08141d802ae" />
 
-**Lesson learned and improvement:** Here the reward structure is based on social rules considering various social situations. But this still remains incomplete becuase all the possible social rules cannot be encoded into a single rule base system. Plus, I tried a reward structure utilizing a quadratic function - still the results were not promising. So, we need a more complicated reward structure that could capture most of  the social nuances. 
+**Lesson learned and possible improvement:** Here the reward structure is based on social rules considering various social situations. But this still remains incomplete becuase all of the possible social rules cannot be encoded into a single rule base system. Plus, I tried reward structures utilizing a quadratic and polynomial function - but still the results were not promising. So, we need a more complicated reward structure that could capture most of  the social nuances. 
 
