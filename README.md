@@ -71,54 +71,62 @@ graph TD
 #### Functional block diagram is visualized as below:
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
+  direction TB
+  state S {
     direction TB
-
-    %% Define the states
-    state "Current State (s)" as S {
-        direction TB
-        Robot_Pos: (rx, ry)
-        Crowd_State: (dist, flow, density)
-    }
-
-    state "Next State (s')" as S_prime {
-        direction TB
-        Robot_Pos_New: (rx', ry')
-        Crowd_State_New: (dist', flow', density')
-    }
-
-    %% Part 1: Deterministic Robot Transitions based on Action (a)
-    note left of S
-        Robot movement is deterministic.
-        Positions are bounded within [1, grid_size].
-    end note
-    
-    S --> S_prime : a = FollowFlow (rx' = rx + 1)
-    S --> S_prime : a = Overtake (ry' = ry + 1)
-    S --> S_prime : a = FindGap (ry' = ry - 1)
-    S --> S_prime : a = Yield or Wait (No change in position)
-
-    %% Part 2: Stochastic Crowd Transition (Independent of Action)
-    note right of S_prime
-        Crowd dynamics are stochastic
-        and independent of the previous state or action.
-    end note
-
+    Robot_Pos
+    Crowd_State
+  }
+  state S_prime {
+    direction TB
+    Robot_Pos_New
     state Crowd_State_New {
-        direction LR
-        state "new_dist'" as ND {
-            1 (Far) : P = 0.6
-            2 (Near) : P = 0.4
-        }
-        state "new_flow'" as NF {
-            1 (Aligned) : P = 0.5
-            2 (Opposing) : P = 0.5
-        }
-        state "new_density'" as NDen {
-            1 (Low) : P = 0.7
-            2 (High) : P = 0.3
-        }
+      direction LR
+      state ND {
+        direction TB
+        (Far)
+        (Near)
+      }
+      state NF {
+        direction TB
+        (Aligned)
+        (Opposing)
+      }
+      state NDen {
+        direction TB
+        (Low)
+        (High)
+      }
     }
+  }
+  S --> S_prime:a = FollowFlow (rx' = rx + 1)
+  S --> S_prime:a = Overtake (ry' = ry + 1)
+  S --> S_prime:a = FindGap (ry' = ry - 1)
+  S --> S_prime:a = Yield or Wait (No change in position)
+  S:Current State (s)
+  Robot_Pos:(rx, ry)
+  Crowd_State:(dist, flow, density)
+  S_prime:Next State (s')
+  Robot_Pos_New:(rx', ry')
+  Crowd_State_New:(dist', flow', density')
+  ND:new_dist'
+  (Far):P = 0.6
+  (Near):P = 0.4
+  NF:new_flow'
+  (Aligned):P = 0.5
+  (Opposing):P = 0.5
+  NDen:new_density'
+  (Low):P = 0.7
+  (High):P = 0.3
+  note left of S 
+  Robot movement is deterministic.
+        Positions are bounded within [1, grid_size].
+  end note
+  note right of S_prime 
+  Crowd dynamics are stochastic
+        and independent of the previous state or action.
+  end note
 ```
 
 ---
