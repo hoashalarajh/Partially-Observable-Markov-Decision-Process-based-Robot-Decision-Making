@@ -89,21 +89,24 @@ stateDiagram-v2
 ```mermaid
 graph TD
     subgraph Environment ["Environment (World)"]
+        direction TB
         s_curr((Current State s)) -->|Action a| s_next((Next State s'))
         s_next -->|Observation Function O| o[Observation o]
         s_next -->|Reward Function R| r[Reward r]
     end
 
-    subgraph Agent ["Agent (Robot)"]
+    subgraph Agent ["Robot Agent (Brain)"]
+        direction TB
         b_curr[(Current Belief b)] -->|Planner POMCPOW| a[Action a]
-        a --> Belief Updater
-        b_curr --> Belief Updater
-        Belief Updater -->|Bayes Update| b_next[(Next Belief b')]
+        o --> Updater{Belief Updater}
+        a --> Updater
+        b_curr --> Updater
+        Updater -->|Bayes Update| b_next[(Next Belief b')]
     end
 
     %% Connections between Agent and Environment
     a -->|Execute| s_curr
-    o -->|Sense| Belief Updater
+    o -->|Sense| Updater
     r -->|Feedback| b_next
 
     %% The Loop Connection
