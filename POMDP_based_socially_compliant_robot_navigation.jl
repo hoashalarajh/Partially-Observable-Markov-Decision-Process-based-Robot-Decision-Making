@@ -200,9 +200,9 @@ function POMDPs.initialstate(p::SocialNavPOMDP)
     ry = 1
     
     # Use sample() instead of rand() for Weights
-    crowd_dist = sample([1, 2], Weights([0.6, 0.4]))
+    crowd_dist = sample([1, 2], Weights([0.5, 0.5]))
     flow       = rand([1, 2]) # rand is ok here as there are no weights
-    density    = sample([1, 2], Weights([0.7, 0.3]))
+    density    = sample([1, 2], Weights([0.5, 0.5]))
 
     return Deterministic(CrowdState(rx, ry, crowd_dist, flow, density))
 end
@@ -223,5 +223,6 @@ planner = solve(solver, pomdp)
 for (s, a, o, r, b) in stepthrough(pomdp, planner, "s,a,o,r,b"; max_steps=1000, rng=rng)
     println("action=$a | obs=$o | reward=$r")
 end
+
 
 
