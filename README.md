@@ -112,7 +112,7 @@ graph TD
 
     %% Styling
     %% I added 'color:black' (text) and 'stroke:black' (border) to Environment
-    style Environment fill:#e1f5fe,stroke:black,stroke-width:2px,color:black
+    style Environment fill:#4e4d82,stroke:black,stroke-width:2px,color:black
     style Agent fill:#fff3e0,stroke:black,stroke-width:2px,color:black
     style Updater fill:#ffd54f,stroke:black,stroke-width:2px,color:black
 ```
